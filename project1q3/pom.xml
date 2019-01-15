@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.revature</groupId>
-  <artifactId>project1q1</artifactId>
+  <groupId>com.revaturedec17</groupId>
+  <artifactId>project1q3</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  	<!-- Change name of jar to keep it simple -->
+
+  <!-- Change name of jar to keep it simple -->
 	<build>
-		<finalName>WordCount</finalName>
+		<finalName>Project1Q2</finalName>
 	</build>
 
 	<!-- Make project Java 8 -->
