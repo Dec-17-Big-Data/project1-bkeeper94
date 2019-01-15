@@ -105,6 +105,7 @@ public class QTwoMapper extends Mapper<LongWritable, Text, Text, Text> {
 		String[] lineArr = prepareLine(removeExtraCommas(line));
 		if (isUnitedStatesData(lineArr[1]) && isValidFemaleEnrollmentLine(lineArr[3])) {
 			String[] valArr = getDataFrom2000Onward(lineArr);
+			// The indicator name is the key in each key-value pair
 			context.write(new Text(lineArr[2].replaceAll("\"", "")), new Text(buildValue(valArr)));
 		}
 	}

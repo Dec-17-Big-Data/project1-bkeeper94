@@ -62,7 +62,7 @@ public class QOneMapper extends Mapper<LongWritable, Text, Text, Text> {
 				|| indicatorCode.compareTo("SE.TER.HIAT.DO.FE.ZS") == 0
 				|| indicatorCode.compareTo("SE.TER.HIAT.MS.FE.ZS") == 0;
 	}
-
+	
 	/**
 	 * This method returns the country name and indicator name of those rows of the
 	 * csv file that satisfy the conditions provided by
