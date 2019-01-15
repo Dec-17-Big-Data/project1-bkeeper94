@@ -15,7 +15,7 @@ public class QThreeDriver {
 		 * Validate that two arguments were passed from the command line.
 		 */
 		if (args.length != 2) {
-			System.out.printf("Usage: QThreeDriver <input dir> <output dir>\n");
+			System.out.printf("Usage: Project1Q3 <input dir> <output dir>\n");
 			System.exit(-1);
 		}
 
@@ -35,7 +35,7 @@ public class QThreeDriver {
 		 * Specify an easily-decipherable name for the job. This job name will appear in
 		 * reports and logs.
 		 */
-		job.setJobName("QThree Driver");
+		job.setJobName("Project1Q3 Driver");
 
 		/*
 		 * Specify the paths to the input and output data based on the command-line

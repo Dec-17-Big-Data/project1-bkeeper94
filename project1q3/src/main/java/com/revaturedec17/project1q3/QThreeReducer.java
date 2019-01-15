@@ -6,7 +6,16 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 public class QThreeReducer extends Reducer<Text, Text, Text, Text> {
-	
+	/**
+	 * This method finds the most current data entry and the least current
+	 * data entry within the interval of values specified by 'input.'
+	 * After the left-most and right-most values are obtained,
+	 * the percent change between these two values is calculated
+	 * and returned.
+	 * 
+	 * @param input
+	 * @return
+	 */
 	String getOverallPrcntChange(String input) {
 		String [] percents = input.split("-");
 		Double currPrcnt = 0.0;
