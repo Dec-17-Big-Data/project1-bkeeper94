@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class QFourDriver {
 
 	public static void main(String[] args) throws Exception {
-
+		
 		/*
 		 * Validate that two arguments were passed from the command line.
 		 */
@@ -23,7 +23,7 @@ public class QFourDriver {
 		 * Instantiate a Job object for your job's configuration.
 		 */
 		Job job = new Job();
-
+		
 		/*
 		 * Specify the jar file that contains your driver, mapper, and reducer. Hadoop
 		 * will transfer this jar file to nodes in your cluster running mapper and
