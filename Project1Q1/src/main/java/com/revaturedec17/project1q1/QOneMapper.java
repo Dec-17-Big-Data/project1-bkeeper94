@@ -49,18 +49,16 @@ public class QOneMapper extends Mapper<LongWritable, Text, Text, Text> {
 	/**
 	 * This method searches the fourth element of each line of the csv file. This
 	 * fourth element of all rows except the first row is a code for the data entry
-	 * being represented by a given line. This method searches for codes
-	 * corresponding to data entries pertaining to females who have completed any
-	 * one of the levels of tertiary education (bachelor's, master's, doctorate).
+	 * being represented by a given line. 
+	 * This method specifically searches these indicator codes for the one that corresponds
+	 * to the gross graduation ratio of females that enrolled in tertiary education. 
 	 * 
 	 * @param lineArr
 	 * @return
 	 **/
 	boolean isValidFemaleGradLine(String indicatorCode) {
 		indicatorCode = indicatorCode.replaceAll("\"", "");
-		return indicatorCode.compareTo("SE.TER.HIAT.BA.FE.ZS") == 0
-				|| indicatorCode.compareTo("SE.TER.HIAT.DO.FE.ZS") == 0
-				|| indicatorCode.compareTo("SE.TER.HIAT.MS.FE.ZS") == 0;
+		return indicatorCode.compareTo("SE.TER.CMPL.FE.ZS") == 0;
 	}
 	
 	/**
@@ -72,8 +70,7 @@ public class QOneMapper extends Mapper<LongWritable, Text, Text, Text> {
 	 * @return
 	 */
 	private String buildKey(String[] validLineArr) {
-		return "Country: " + validLineArr[0].replaceAll("\"", "") + "--" + "Data Name: "
-				+ validLineArr[2].replaceAll("\"", "");
+		return "Country: " + validLineArr[0].replaceAll("\"", "");
 	}
 
 	/**
