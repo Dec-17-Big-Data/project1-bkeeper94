@@ -60,18 +60,6 @@ public class QOneMapper extends Mapper<LongWritable, Text, Text, Text> {
 		indicatorCode = indicatorCode.replaceAll("\"", "");
 		return indicatorCode.compareTo("SE.TER.CMPL.FE.ZS") == 0;
 	}
-	
-	/**
-	 * This method returns the country name and indicator name of those rows of the
-	 * csv file that satisfy the conditions provided by
-	 * isValidFemaleEducationalAttainment and hasDataPoints
-	 * 
-	 * @param validLineArr
-	 * @return
-	 */
-	private String buildKey(String[] validLineArr) {
-		return "Country: " + validLineArr[0].replaceAll("\"", "");
-	}
 
 	/**
 	 * Helper method that returns an int array containing the years from 1960 to
@@ -132,7 +120,8 @@ public class QOneMapper extends Mapper<LongWritable, Text, Text, Text> {
 		String line = value.toString();
 		String[] lineArr = prepareLine(removeExtraCommas(line));
 		if (isValidFemaleGradLine(lineArr[3]) && hasDataPoints(lineArr)) {
-			context.write(new Text(buildKey(lineArr)), new Text(buildValue(lineArr)));
+			// The country name is the key in each key-value pair
+			context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(buildValue(lineArr)));
 		}
 	}
 }

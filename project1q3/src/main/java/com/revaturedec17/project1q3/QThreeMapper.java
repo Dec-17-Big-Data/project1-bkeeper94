@@ -59,7 +59,7 @@ public class QThreeMapper extends Mapper<LongWritable, Text, Text, Text> {
 	 **/
 	boolean isValidFemaleEmploymentLine(String indicatorCode) {
 		indicatorCode = indicatorCode.replaceAll("\"", "");
-		return indicatorCode.compareTo("SL.EMP.TOTL.SP.FE.NE.ZS") == 0;
+		return indicatorCode.compareTo("SL.EMP.TOTL.SP.MA.NE.ZS") == 0;
 	}
 	
 	/**
@@ -101,9 +101,9 @@ public class QThreeMapper extends Mapper<LongWritable, Text, Text, Text> {
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		String line = value.toString();
 		String[] lineArr = prepareLine(removeExtraCommas(line));
-		if (isValidFemaleEmploymentLine(lineArr[3])) {
+		if (isValidFemaleEmploymentLine(lineArr[3]) && hasDataPoints(lineArr)) {
 			String[] valArr = getDataFrom2000Onward(lineArr);
-			// The indicator name is the key in each key-value pair
+			// The country name is the key in each key-value pair
 			context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(buildValue(valArr)));
 		}
 	}

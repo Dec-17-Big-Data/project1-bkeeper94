@@ -52,14 +52,14 @@ public class QFourMapper extends Mapper<LongWritable, Text, Text, Text> {
 	 * fourth element of all rows except the first row is a code for the data entry
 	 * being represented by a given line. This method searches for codes
 	 * corresponding to data entries that show the national estimate of the
-	 * employment to population ratio as applied to females of 15+ years of age.
+	 * employment to population ratio as applied to males of 15+ years of age.
 	 * 
 	 * @param lineArr
 	 * @return
 	 **/
-	boolean isValidFemaleEmploymentLine(String indicatorCode) {
+	boolean isValidMaleEmploymentLine(String indicatorCode) {
 		indicatorCode = indicatorCode.replaceAll("\"", "");
-		return indicatorCode.compareTo("SL.EMP.TOTL.SP.MA.NE.ZS") == 0;
+		return indicatorCode.compareTo("SL.EMP.TOTL.SP.FE.NE.ZS") == 0;
 	}
 	
 	/**
@@ -101,9 +101,9 @@ public class QFourMapper extends Mapper<LongWritable, Text, Text, Text> {
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		String line = value.toString();
 		String[] lineArr = prepareLine(removeExtraCommas(line));
-		if (isValidFemaleEmploymentLine(lineArr[3])) {
+		if (isValidMaleEmploymentLine(lineArr[3]) && hasDataPoints(lineArr)) {
 			String[] valArr = getDataFrom2000Onward(lineArr);
-			// The indicator name is the key in each key-value pair
+			// The country name is the key in each key-value pair
 			context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(buildValue(valArr)));
 		}
 	}

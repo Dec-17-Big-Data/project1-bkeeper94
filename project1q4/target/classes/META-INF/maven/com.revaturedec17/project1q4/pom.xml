@@ -10,7 +10,7 @@
 	<build>
 		<finalName>Project1Q4</finalName>
 	</build>
-	
+
 	<!-- Make project Java 8 -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
