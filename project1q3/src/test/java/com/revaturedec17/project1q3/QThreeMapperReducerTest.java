@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class QThreeMapperReducerTest {
-	// Change these as necessary
 	MapDriver<LongWritable, Text, Text, Text> mapDriver;
 	ReduceDriver<Text, Text, Text, Text> reduceDriver;
 	MapReduceDriver<LongWritable, Text, Text, Text, Text, Text> mapReduceDriver;

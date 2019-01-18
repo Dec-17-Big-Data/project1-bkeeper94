@@ -21,11 +21,9 @@ public class QTwoMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 	/**
 	 * This method transforms a line of the csv file into an array by splitting it
-	 * at every comma. This method only takes in a line that has already been passed
-	 * through the methods removeExtraCommas, removeQuotes, and
-	 * fillInEmptyDataEntries. This method checks if the array has one extra element
-	 * at the end and "removes" it by creating a copy of the new array that does not
-	 * have that last element.
+	 * at every comma. 
+	 * This method only takes in a line that has already been passed
+	 * through the method removeExtraCommas.
 	 * 
 	 * @param goodLine
 	 * @return

@@ -26,7 +26,7 @@ public class QOneMapperReducerTest {
 	}
 	
 	/**
-	 *  These 9 MRUnit methods will test map-reduce on 3 of the rows that will
+	 *  These 3 MRUnit methods will test map-reduce on one of the rows that will
 	 *  contribute to the overall output of the hadoop job.
 	 */
 	
@@ -38,7 +38,7 @@ public class QOneMapperReducerTest {
 				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
 				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"18.57285\",\"24.49351\","
 				+ "\"28.21447\",\"\",";
-		String expectedKey1 = "Country: China";
+		String expectedKey1 = "China";
 		String expectedValue1 = "Year: 2015--Percentage: 28.21447";
 		mapDriver.withInput(new LongWritable(), new Text(record1));
 		mapDriver.withOutput(new Text(expectedKey1), new Text(expectedValue1));
@@ -65,7 +65,7 @@ public class QOneMapperReducerTest {
 				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
 				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"18.57285\",\"24.49351\","
 				+ "\"28.21447\",\"\",";
-		String expectedKeyResult1 = "Country: China";
+		String expectedKeyResult1 = "China";
 		String expectedValueResult1 = "Year: 2015--Percentage: 28.21447";
 		mapReduceDriver.withInput(new LongWritable(), new Text(record1));
 		mapReduceDriver.withOutput(new Text(expectedKeyResult1), new Text(expectedValueResult1));
