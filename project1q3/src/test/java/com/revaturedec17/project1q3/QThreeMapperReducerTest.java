@@ -44,25 +44,47 @@ public class QThreeMapperReducerTest {
 				+ "\"60.8300018310547\",\"61.2000007629395\",\"62.5299987792969\",\"62.75\",\"62.7599983215332\","
 				+ "\"62.8199996948242\",\"62.5900001525879\",\"\",";
 		String expectedKey1 = "Germany";
-		String expectedValue1 = "61.560001373291-61.060001373291-59.9799995422363-58.7099990844727-57.4500007629395-"
-				+ "58.6100006103516-59.4799995422363-60.5900001525879-61.3899993896484-60.8300018310547-61.2000007629395-"
-				+ "62.5299987792969-62.75-62.7599983215332-62.8199996948242-62.5900001525879-\"\"";
+		String expectedValue1 = "2000,2015:61.560001373291,62.5900001525879";
 		mapDriver.withInput(new LongWritable(), new Text(record1));
 		mapDriver.withOutput(new Text(expectedKey1), new Text(expectedValue1));
 		mapDriver.runTest();
 	}
 	
 	@Test
+	public void testMapperAgain() {
+		String record2 = "\"Algeria\",\"DZA\",\"Employment to population ratio, 15+, male (%) (national estimate)\","
+				+ "\"SL.EMP.TOTL.SP.MA.NE.ZS\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"60.4199981689453\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"62.7799987792969\",\"63.2799987792969\",\"\",\"\",\"\",\"60.1399993896484\",\"\",\"\",";
+		String expectedKey2 = "Algeria";
+		String expectedValue2 = "2009,2014:62.7799987792969,60.1399993896484";
+		mapDriver.withInput(new LongWritable(), new Text(record2));
+		mapDriver.withOutput(new Text(expectedKey2), new Text(expectedValue2));
+		mapDriver.runTest();
+	}
+	
+	@Test
 	public void testReducer() {
-		String inputVal1 = "61.560001373291-61.060001373291-59.9799995422363-58.7099990844727-57.4500007629395-"
-				+ "58.6100006103516-59.4799995422363-60.5900001525879-61.3899993896484-60.8300018310547-61.2000007629395-"
-				+ "62.5299987792969-62.75-62.7599983215332-62.8199996948242-62.5900001525879-\"\"";
+		String inputVal1 = "2000,2015:61.560001373291,62.5900001525879";
 		List<Text> values1 = new ArrayList<Text>();
 		values1.add(new Text(inputVal1));
 		String key1 = "Germany";
-		String expectedValue1 = "1.67";
+		String expectedValue1 = "2000,2015:1.67";
 		reduceDriver.withInput(new Text(key1), values1);
 		reduceDriver.withOutput(new Text(key1), new Text(expectedValue1));
+		reduceDriver.runTest();
+	}
+	
+	@Test
+	public void testReducerAgain() {
+		String inputVal2 = "2009,2014:62.7799987792969,60.1399993896484";
+		List<Text> values2 = new ArrayList<Text>();
+		values2.add(new Text(inputVal2));
+		String key2 = "Algeria";
+		String expectedValue2 = "2009,2014:-4.21";
+		reduceDriver.withInput(new Text(key2), values2);
+		reduceDriver.withOutput(new Text(key2), new Text(expectedValue2));
 		reduceDriver.runTest();
 	}
 	
@@ -80,9 +102,23 @@ public class QThreeMapperReducerTest {
 				+ "\"60.8300018310547\",\"61.2000007629395\",\"62.5299987792969\",\"62.75\",\"62.7599983215332\","
 				+ "\"62.8199996948242\",\"62.5900001525879\",\"\",";
 		String expectedKeyResult1 = "Germany";
-		String expectedValueResult1 = "1.67";
+		String expectedValueResult1 = "2000,2015:1.67";
 		mapReduceDriver.withInput(new LongWritable(), new Text(record1));
 		mapReduceDriver.withOutput(new Text(expectedKeyResult1), new Text(expectedValueResult1));
+		mapReduceDriver.runTest();
+	}
+	
+	@Test
+	public void testMapReduceAgain() {
+		String record2 = "\"Algeria\",\"DZA\",\"Employment to population ratio, 15+, male (%) (national estimate)\","
+				+ "\"SL.EMP.TOTL.SP.MA.NE.ZS\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"60.4199981689453\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\","
+				+ "\"62.7799987792969\",\"63.2799987792969\",\"\",\"\",\"\",\"60.1399993896484\",\"\",\"\",";
+		String expectedKeyResult2  = "Algeria";
+		String expectedValueResult2 = "2009,2014:-4.21";
+		mapReduceDriver.withInput(new LongWritable(), new Text(record2));
+		mapReduceDriver.withOutput(new Text(expectedKeyResult2), new Text(expectedValueResult2));
 		mapReduceDriver.runTest();
 	}
 }

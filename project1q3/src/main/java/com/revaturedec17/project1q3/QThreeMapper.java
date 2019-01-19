@@ -1,7 +1,6 @@
 package com.revaturedec17.project1q3;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -34,11 +33,17 @@ public class QThreeMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 	/**
 	 * This method searches the data points within each row of the csv file to
-	 * determine which rows contain data and which rows do not.
+	 * determine which rows contain at least two data points in the interval
+	 * 2000 and 2016 and which do not.
 	 */
-	boolean hasDataPoints(String[] lineArr) {
-		for (int i = 4; i < lineArr.length; i++) {
+	boolean hasTwoPlusDataPoints(String[] lineArr) {
+		int dataCount = 0;
+		for (int i = lineArr.length - (2016 - 2000 + 1); 
+				i < lineArr.length; i++) {
 			if (lineArr[i].compareTo("\"\"") != 0) {
+				dataCount++;
+			}
+			if (dataCount >=2) {
 				return true;
 			}
 		}
@@ -61,48 +66,97 @@ public class QThreeMapper extends Mapper<LongWritable, Text, Text, Text> {
 	}
 
 	/**
-	 * This method takes in data row arrays that pass through the methods
-	 * hasDataPoints and isValidMaleEmploymentLine and returns all data entries that
-	 * are from the year 2000 onward.
+	 * Helper method that returns an int array containing the years 
+	 * from 2000 to 2016
+	 * 
+	 * @return
+	 */
+	int[] getYears() {
+		int yearOne = 2000;
+		int yearEnd = 2016;
+		int[] years = new int[yearEnd - yearOne + 1];
+		years[0] = yearOne;
+		for (int i = 1; i < years.length; i++) {
+			years[i] = years[i - 1] + 1;
+		}
+		return years;
+	}
+	
+	/**
+	 * This method extracts the most current data point and the corresponding year
+	 * from those lines of the csv file that satisfy the methods
+	 * isValidFemaleEducationalAttainmentLine and hasTwoPlusDataPoints.
 	 * 
 	 * @param lineArr
 	 * @return
-	 */
-	String[] getDataFrom2000Onward(String[] lineArr) {
-		return Arrays.copyOfRange(lineArr, lineArr.length - (2016 - 2000 + 1), lineArr.length);
+	 **/
+	String[] getMostCurrentDataPoint(String[] validLineArr, int[] years) {
+		String[] result = new String[2];
+		Double currValue = 0.0;
+		int currValueInd = 0;
+		for (int i = validLineArr.length - (2016 - 2000 + 1); 
+				i < validLineArr.length; i++) {
+			if (validLineArr[i].compareTo("\"\"") == 0) {
+				continue;
+			}
+			validLineArr[i] = validLineArr[i].replaceAll("\"", "");
+			currValue = Double.valueOf(validLineArr[i]);
+			currValueInd = i;
+		}
+		result[0] = ((Integer) years[currValueInd - (2000 - 1960 + 1 + 3)]).toString();
+		result[1] = currValue.toString();
+		return result;
 	}
-
+	
 	/**
-	 * This method transforms the array returned by getDataFrom2000Onward into a
-	 * string containing the data entries from the array and any empty entries from
-	 * the array; all elements are separated by dashes
+	 * This method extracts the data point from the year closest to
+	 * or equal to the year 2000.
+	 * This method only searches those lines of the csv file that 
+	 * satisfy the methods isValidFemaleEducationalAttainmentLine 
+	 * and hasTwoPlusDataPoints.
 	 * 
-	 * @param valArr
+	 * @param lineArr
+	 * @return
+	 **/
+	String[] getLeastCurrentDataPoint(String[] validLineArr, int[] years) {
+		String[] result = new String[2];
+		Double currValue = 0.0;
+		int currValueInd = 0;
+		for (int i = validLineArr.length - 1; 
+				i >= validLineArr.length - (2016 - 2000 + 1); i--) {
+			if (validLineArr[i].compareTo("\"\"") == 0) {
+				continue;
+			}
+			validLineArr[i] = validLineArr[i].replaceAll("\"", "");
+			currValue = Double.valueOf(validLineArr[i]);
+			currValueInd = i;
+		}
+		result[0] = ((Integer) years[currValueInd - (2000 - 1960 + 1 + 3)]).toString();
+		result[1] = currValue.toString();
+		return result;
+	}
+	
+	/**
+	 * This method receives the output from getMostCurrentDataPoint and the
+	 * output from getLeastCurrentDataPoint and combines them into
+	 * a single string
+	 * 
+	 * @param validLineArr
 	 * @return
 	 */
-	String buildValue(String[] valArr) {
-		StringBuffer value = new StringBuffer();
-		for (int i = 0; i < valArr.length; i++) {
-			if (valArr[i].compareTo("\"\"") != 0) {
-				valArr[i] = valArr[i].replaceAll("\"", "");
-			}
-			if (i == valArr.length - 1) {
-				value.append(valArr[i]);
-			} else {
-				value.append(valArr[i] + "-");
-			}
-		}
-		return value.toString();
+	private String buildValue(String[] validLineArr) {
+		String[] result1 = getLeastCurrentDataPoint(validLineArr, getYears());
+		String[] result2 = getMostCurrentDataPoint(validLineArr, getYears());
+		return result1[0] + "," + result2[0] + ":" + result1[1] + "," + result2[1];
 	}
 
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		String line = value.toString();
 		String[] lineArr = prepareLine(removeExtraCommas(line));
-		if (isValidMaleEmploymentLine(lineArr[3]) && hasDataPoints(lineArr)) {
-			String[] valArr = getDataFrom2000Onward(lineArr);
+		if (isValidMaleEmploymentLine(lineArr[3]) && hasTwoPlusDataPoints(lineArr)) {
 			// The country name is the key in each key-value pair
-			context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(buildValue(valArr)));
+			context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(buildValue(lineArr)));
 		}
 	}
 }

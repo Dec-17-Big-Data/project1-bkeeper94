@@ -72,7 +72,8 @@ public class QFiveMapper extends Mapper<LongWritable, Text, Text, Text> {
 	 * @return
 	 */
 	String get2003DataPoint(String[] lineArr) {
-		return lineArr[lineArr.length - (2016 - 2003 + 1)];
+		return lineArr[lineArr.length - (2016 - 2003 + 1)].compareTo("\"\"") == 0 ? 
+				null : lineArr[lineArr.length - (2016 - 2003 + 1)].replaceAll("\"", "");
 	}
 
 	@Override
@@ -80,8 +81,11 @@ public class QFiveMapper extends Mapper<LongWritable, Text, Text, Text> {
 		String line = value.toString();
 		String[] lineArr = prepareLine(removeExtraCommas(line));
 		if (isValidStartupLine(lineArr[3]) && hasDataPoints(lineArr)) {
-			// The country name is the key in each key-value pair
-			context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(get2003DataPoint(lineArr)));
+			String entryAt2003 = get2003DataPoint(lineArr);
+			if (entryAt2003 != null) {
+				// The country name is the key in each key-value pair
+				context.write(new Text(lineArr[0].replaceAll("\"", "")), new Text(entryAt2003 + "," + lineArr[3].replaceAll("\"", "")));
+			}
 		}
 	}
 }

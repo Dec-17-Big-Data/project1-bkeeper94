@@ -30,7 +30,7 @@ public class QTwoReducer extends Reducer<Text, Text, Text, Text> {
 		Double currPrcntDiff = 0.0;
 		double scale = Math.pow(10, 3); // used to round each difference
 		int shift = 1; // used to account for an empty entry in the middle of the input string
-		int count = 1; 
+		int count = 0; // used to track how many differences were calculated over the interval
 		for (int i = 1; i < percents.length; i++) {
 			if (percents[i].compareTo("\"\"") == 0) {
 				shift++;
