@@ -15,7 +15,7 @@ public class QFiveMapperReducerTest {
 	MapDriver<LongWritable, Text, Text, Text> mapDriver;
 	ReduceDriver<Text, Text, Text, Text> reduceDriver;
 	MapReduceDriver<LongWritable, Text, Text, Text, Text, Text> mapReduceDriver;
-	
+
 	@Before
 	public void setUp() {
 		QFiveMapper mapper = new QFiveMapper();
@@ -24,12 +24,12 @@ public class QFiveMapperReducerTest {
 		reduceDriver = ReduceDriver.newReduceDriver(reducer);
 		mapReduceDriver = MapReduceDriver.newMapReduceDriver(mapper, reducer);
 	}
-	
+
 	/**
-	 * These 3 MRUnit test methods will test map-reduce on one of the rows of the csv file that 
-	 * will contribute to the overall output of the hadoop job.
+	 * These 3 MRUnit test methods will test map-reduce on one of the rows of the
+	 * csv file that will contribute to the overall output of this hadoop job.
 	 */
-	
+
 	@Test
 	public void testMapper() {
 		String record1 = "\"China\",\"CHN\",\"Time required to start up a business, female (days)\",\"IC.REG.DURS.FE\",\"\","
@@ -42,7 +42,7 @@ public class QFiveMapperReducerTest {
 		mapDriver.withOutput(new Text(expectedKey1), new Text(expectedValue1));
 		mapDriver.runTest();
 	}
-	
+
 	@Test
 	public void testReducer() {
 		String inputVal1 = "6,IC.REG.PROC.FE";
@@ -55,12 +55,13 @@ public class QFiveMapperReducerTest {
 		values1.add(new Text(inputVal3));
 		values1.add(new Text(inputVal4));
 		String key1 = "United States";
-		String expectedValue1 = "6,days to start business,6,procedures to register business";
+		String expectedValue1 = "6-days to start business (female):6-procedures to register business (female):"
+				+ "6-days to start business (male):6-procedures to register business (male)";
 		reduceDriver.withInput(new Text(key1), values1);
 		reduceDriver.withOutput(new Text(key1), new Text(expectedValue1));
 		reduceDriver.runTest();
 	}
-	
+
 	@Test
 	public void testMapReduce() {
 		String record1 = "\"United States\",\"USA\",\"Time required to start up a business, female (days)\","
@@ -84,7 +85,8 @@ public class QFiveMapperReducerTest {
 				+ "\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"6\",\"6\",\"6\",\"6\",\"6\",\"5\","
 				+ "\"5\",\"5\",\"5\",\"5\",\"6.2\",\"5.6\",\"5.6\",\"5.6\",";
 		String expectedKeyResult1 = "United States";
-		String expectedValueResult1 = "6,days to start business,6,procedures to register business";
+		String expectedValueResult1 = "6-days to start business (female):6-procedures to register business (female):"
+				+ "6-days to start business (male):6-procedures to register business (male)";
 		mapReduceDriver.withInput(new LongWritable(), new Text(record1));
 		mapReduceDriver.withInput(new LongWritable(), new Text(record2));
 		mapReduceDriver.withInput(new LongWritable(), new Text(record3));

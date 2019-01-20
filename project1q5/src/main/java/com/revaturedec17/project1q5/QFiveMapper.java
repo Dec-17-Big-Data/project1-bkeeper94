@@ -47,11 +47,11 @@ public class QFiveMapper extends Mapper<LongWritable, Text, Text, Text> {
 	/**
 	 * This method searches the fourth element of each line of the csv file. This
 	 * fourth element of all rows except the first row is a code for the data entry
-	 * being represented by a given line. This method specifically searches for
-	 * codes corresponding to data entries that provide business start-up
-	 * information. The two pieces of data from this set that are of interest are
-	 * the number of procedures needed to register a business and the time in days
-	 * required to start a business.
+	 * being represented by a given line. 
+	 * This method specifically searches for codes corresponding to data entries
+	 * that provide business start-up information. The two pieces of data from 
+	 * this set that are of interest are the number of procedures needed to 
+	 * register a business and the time in days required to start a business.
 	 * 
 	 * @param lineArr
 	 * @return
@@ -64,9 +64,9 @@ public class QFiveMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 	/**
 	 * This method searches the data that passes through the methods hasDataPoints
-	 * and isValidStartupLine and returns each entry from the year 2003. Each 2003
-	 * data point serves as the value in all key-values pairs generated from the map
-	 * method.
+	 * and isValidStartupLine and returns each entry from the year 2003. 
+	 * Each 2003 data point serves as the value in all key-values pairs 
+	 * generated from the map method.
 	 * 
 	 * @param lineArr
 	 * @return

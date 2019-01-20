@@ -26,7 +26,7 @@ public class QFourMapperReducerTest {
 	}
 	
 	/**
-	 * These 3 MRUnit test methods will test map-reduce on one of the rows of the csv file that 
+	 * These 3 MRUnit test methods will test map-reduce on two of the rows of the csv file that 
 	 * will contribute to the overall output of the hadoop job.
 	 */
 	
